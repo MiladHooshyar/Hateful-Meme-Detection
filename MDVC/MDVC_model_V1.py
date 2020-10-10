@@ -92,12 +92,12 @@ class EncoderLayer(nn.Module):
         super(EncoderLayer, self).__init__()
         self.linear = nn.Linear(d_encoder, d_model)
         self.res_layers = clone(ResidualConnection(d_model, dout_p), 2)
-        self.self_att = MultiheadedAttention(d_model, H)
-        self.feed_forward = PositionwiseFeedForward(d_model, d_ff)
+        self.feed_forward_0 = PositionwiseFeedForward(d_model, d_model)
+        self.feed_forward_1 = PositionwiseFeedForward(d_model, d_ff)
 
     def forward(self, x, src_mask):
-        sublayer0 = lambda x: self.self_att(x, x, x, src_mask)
-        sublayer1 = self.feed_forward
+        sublayer0 = self.feed_forward_0
+        sublayer1 = self.feed_forward_1
 
         x = self.linear(x)
         x = F.relu(x)
@@ -125,15 +125,15 @@ class DecoderLayer(nn.Module):
         super(DecoderLayer, self).__init__()
         self.linear = nn.Linear(d_decoder, d_model)
         self.res_layers = clone(ResidualConnection(d_model, dout_p), 3)
-        self.self_att = MultiheadedAttention(d_model, H)
         self.enc_att = MultiheadedAttention(d_model, H)
-        self.feed_forward = PositionwiseFeedForward(d_model, d_ff)
+        self.feed_forward_0 = PositionwiseFeedForward(d_model, d_model)
+        self.feed_forward_1 = PositionwiseFeedForward(d_model, d_ff)
 
     def forward(self, x, memory, src_mask,
                 trg_mask):
-        sublayer0 = lambda x: self.self_att(x, x, x, trg_mask)
+        sublayer0 = self.feed_forward_0
         sublayer1 = lambda x: self.enc_att(x, memory, memory, src_mask)
-        sublayer2 = self.feed_forward
+        sublayer2 = self.feed_forward_1
 
         x = self.linear(x)
         x = F.relu(x)
@@ -160,13 +160,15 @@ class Classifier(nn.Module):
 
     def __init__(self, d_model, n_label, dout_p):
         super(Classifier, self).__init__()
-        self.linear = nn.Linear(d_model, n_label)
+        self.linear = nn.Linear(d_model, d_model//2)
         self.dropout = nn.Dropout(dout_p)
-        self.linear2 = nn.Linear(n_label, n_label)
+        self.linear2 = nn.Linear(d_model//2, n_label)
 
     def forward(self, x):
-        x = self.linear(x)
-        x = self.linear2(self.dropout(torch.sigmoid(x)))
+        x = self.linear(self.dropout(x))
+        x = F.relu(x)
+        x = self.linear2(x)
+        x = torch.sigmoid(x)
         return x
 
 

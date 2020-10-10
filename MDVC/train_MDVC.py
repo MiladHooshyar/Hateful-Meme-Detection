@@ -1,79 +1,77 @@
-import MDVC_model
+import MDVC_model_V1
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.utils.data as data_utils
+from collections import  defaultdict
 
 train = np.load('D:/meme_data/features/train.npz')
+feature_list = ['txt_fea', 'txt_mod', 'img_fea',
+                'img_mod']
+train_tensor = defaultdict()
+for fe in feature_list:
+    temp = train[fe]
+    temp = temp.reshape(temp.shape[0], 1, temp.shape[1])
+    train_tensor[fe] = torch.tensor(temp).float()
+train_tensor['label'] = torch.tensor(train['label']).long()
 
-txt_fea_train = train['txt_fea']
-txt_mod_train = train['txt_mod']
-img_fea_train = train['img_fea']
-img_mod_train = train['img_mod']
-label_train = train['label']
-
+dataset_train = data_utils.TensorDataset(train_tensor['img_fea'], train_tensor['txt_fea'],
+                                         train_tensor['label'])
+loader_train = data_utils.DataLoader(
+    dataset_train,
+    batch_size=1, shuffle=True)
 
 dev = np.load('D:/meme_data/features/dev.npz')
-txt_fea_dev = dev['txt_fea']
-txt_mod_dev = dev['txt_mod']
-img_fea_dev = dev['img_fea']
-img_mod_dev = dev['img_mod']
-label_dev = dev['label']
+validation_tensor = defaultdict()
+for fe in feature_list:
+    temp = dev[fe]
+    temp = temp.reshape(temp.shape[0], 1, temp.shape[1])
+    validation_tensor[fe] = torch.tensor(temp).float()
+validation_tensor['label'] = torch.tensor(dev['label']).long()
 
+dataset_validation = data_utils.TensorDataset(validation_tensor['img_fea'], validation_tensor['txt_fea'],
+                                              validation_tensor['label'])
+loader_validation = data_utils.DataLoader(
+    dataset_validation,
+    batch_size=128)
 
-batch_size = 256
-X_encoder, X_decoder, Label = [], [], []
-for i in range(0, img_fea_train.shape[0], batch_size):
-    temp_batch = min(img_mod_train.shape[0], i + batch_size) - i
-    temp = img_fea_train[i:i + temp_batch, :]
-    temp = torch.tensor(temp.reshape(temp_batch, 1, temp.shape[1]))
-    X_encoder.append(temp.float())
+d_encoder = validation_tensor['img_fea'].size(-1)
+d_decoder = validation_tensor['txt_fea'].size(-1)
 
-    temp = txt_fea_train[i:i + temp_batch, :]
-    temp = torch.tensor(temp.reshape(temp_batch, 1, temp.shape[1]))
-    X_decoder.append(temp.float())
+d_model = 200
+H = 2
 
-    temp = label_train[i:i+temp_batch]
-    Label.append(torch.tensor(temp).long())
-
-temp = img_fea_dev.reshape(img_fea_dev.shape[0], 1, img_fea_dev.shape[1])
-X_encoder_v = torch.tensor(temp).float()
-
-temp = txt_fea_dev.reshape(txt_fea_dev.shape[0], 1, txt_fea_dev.shape[1])
-X_decoder_v = torch.tensor(temp).float()
-
-Label_v = torch.tensor(label_dev).long()
-
-
-d_encoder = X_encoder[0].size(-1)
-d_decoder = X_decoder[0].size(-1)
-d_model = 500
-H = 5
 d_ff = 100
 N = 1
 dout_p = 0.1
 n_label = 2
 
-N_Epoch = 200
+N_Epoch = 300
 
-model = MDVC_model.Model(d_encoder=d_encoder, d_decoder=d_decoder,
+model = MDVC_model_V1.Model(d_encoder=d_encoder, d_decoder=d_decoder,
            d_model=d_model, dout_p=dout_p, H=H,
            d_ff=d_ff, n_label=n_label, N=N)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+optimizer = optim.Adam(model.parameters())
 
-model.train_manual(criterion, optimizer, N_Epoch,
-              X_encoder, X_decoder, Label,
-              X_encoder_v, X_decoder_v, Label_v)
+for epoch in range(N_Epoch):
+    model.train()
+    loss = model.train_manual(criterion, optimizer, loader_train)
+    model.eval()
+    loss_val, auc_val = model.evalute(criterion, loader_validation)
 
-# pred = model(X_encoder_v, X_decoder_v, src_mask=None, trg_mask=None)
-# print(pred.size())
-# print(criterion(pred[:, 0, :], Label_v))
+    print('[%d] loss: %.3f  val loss: %.3f  val auc: %.3f' %
+          (epoch + 1, loss, loss_val, auc_val))
 
 
-# loss = nn.CrossEntropyLoss()
-# input = torch.randn(3, 5, requires_grad=True)
-# target = torch.empty(3, dtype=torch.long).random_(5)
-# output = loss(input, target)
-# print(target.size())
+
+# d_model = 300
+# H = 3
+# d_ff = 100
+#
+# l = MDVC_model_V1.DecoderLayer(d_decoder, d_model, dout_p, H , d_ff)
+#
+# x = l(torch.zeros(1, 1, d_decoder), torch.zeros(1, 1, d_model), None, None)
+# print(x.size())
