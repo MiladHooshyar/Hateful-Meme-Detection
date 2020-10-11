@@ -4,6 +4,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from sklearn.metrics import roc_auc_score
+from collections import defaultdict
+import torch.utils.data as data_utils
 
 
 def clone(module, N):
@@ -82,6 +84,8 @@ class PositionwiseFeedForward(nn.Module):
         x = self.fc1(x)
         x = F.relu(x)
         x = self.fc2(x)
+        x = F.relu(x)
+
 
         return x
 
@@ -139,6 +143,7 @@ class DecoderLayer(nn.Module):
         x = F.relu(x)
         x = self.res_layers[0](x, sublayer0)
         x = self.res_layers[1](x, sublayer1)
+        x = F.relu(x)
         x = self.res_layers[2](x, sublayer2)
 
         return x
@@ -160,9 +165,9 @@ class Classifier(nn.Module):
 
     def __init__(self, d_model, n_label, dout_p):
         super(Classifier, self).__init__()
-        self.linear = nn.Linear(d_model, d_model//2)
+        self.linear = nn.Linear(d_model, d_model // 2)
         self.dropout = nn.Dropout(dout_p)
-        self.linear2 = nn.Linear(d_model//2, n_label)
+        self.linear2 = nn.Linear(d_model // 2, n_label)
 
     def forward(self, x):
         x = self.linear(self.dropout(x))
@@ -178,6 +183,10 @@ class Model(nn.Module):
         self.encoder = Encoder(d_encoder, d_model, dout_p, H, d_ff, N)
         self.decoder = Decoder(d_decoder, d_model, dout_p, H, d_ff, N)
         self.classifier = Classifier(d_model, n_label, dout_p)
+        self.loss = []
+        self.auc = []
+        self.loss_val = []
+        self.auc_val = []
 
     def forward(self, x_encode, x_decode, src_mask, trg_mask):
         x_encode = self.encoder(x_encode, src_mask=src_mask)
@@ -186,7 +195,8 @@ class Model(nn.Module):
         return x
 
     def train_manual(self, criterion, optimizer, loader):
-        running_loss = 0.0
+        running_loss, auc = 0.0, 0.0
+        pred_lb, lb = [], []
         for i, data in enumerate(loader, 0):
             x_encoder, x_decoder, label = data
             optimizer.zero_grad()
@@ -196,16 +206,50 @@ class Model(nn.Module):
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-        return running_loss/(i + 1)
+            pred_lb += list(outputs[:, 0, 1].detach().numpy())
+            lb += list(label.detach().numpy()[:, 1])
+        auc = roc_auc_score(lb, pred_lb)
+        self.loss.append(running_loss / (i + 1))
+        self.auc.append(auc)
 
     def evalute(self, criterion, loader):
         running_loss, auc = 0, 0
+        pred_lb, lb = [], []
         for i, data in enumerate(loader, 0):
             x_encoder, x_decoder, label = data
             outputs = self.forward(x_encode=x_encoder, x_decode=x_decoder,
                                    src_mask=None, trg_mask=None)
+
             loss = criterion(outputs[:, 0, :], label)
             running_loss += loss.item()
-            auc += roc_auc_score(label.detach().numpy(), outputs[:, 0, 1].detach().numpy())
+            pred_lb += list(outputs[:, 0, 1].detach().numpy())
+            lb += list(label.detach().numpy()[:, 1])
 
-        return  running_loss/(i + 1), auc/(i + 1)
+        auc = roc_auc_score(lb, pred_lb)
+        self.loss_val.append(running_loss / (i + 1))
+        self.auc_val.append(auc)
+
+    def early_stop(self, patience=10):
+        if max(self.auc_val[-patience:]) >= max(self.auc_val[:patience]):
+            return False
+        else:
+            return True
+
+    def save_model(self, path):
+        if len(self.auc_val) >= 2:
+            if self.auc_val[-1] >= max(self.auc_val[:-1]):
+                torch.save(self.state_dict(), path)
+
+
+def load_data(data, feature_list):
+    data_tensor = defaultdict()
+    for fe in feature_list:
+        temp = data[fe]
+        temp = temp.reshape(temp.shape[0], 1, temp.shape[1])
+        data_tensor[fe] = torch.tensor(temp).float()
+    label = np.zeros((data['label'].shape[0], 2))
+    label[:, 0] = 1 - data['label']
+    label[:, 1] = data['label']
+    data_tensor['label'] = torch.tensor(label).float()
+    return data_utils.TensorDataset(data_tensor['img_fea'], data_tensor['txt_fea'],
+                                    data_tensor['label'])
