@@ -1,5 +1,9 @@
-<p align="left"> <img src="/img/logo.png"  width="10"> </p>
+
 # HateBlocker
+
+<p align="center"> <img src="/img/logo.png"  width="100"> </p>
+
+
 HateBlocker is an API that utilizes deep learning to detect hateful memes from visual and textual information.
 
 
