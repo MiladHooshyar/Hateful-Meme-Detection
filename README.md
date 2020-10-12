@@ -15,7 +15,11 @@ The best performance of this model (after a lot of fine-tuning) is AUC-ROC = 0.7
 Here is also an example that shows how the meaning of a meme changes with modifying either the textual and visual content which highlights the nonlinear interaction of information from image and text.
 []
 For deployment, this model is coupled with a google vision OCR (for caption extraction) and is implemented as a Flask API. The API inputs a meme URL and outputs the class probabilities. The end-product of this project is a Chrome extension (HateBlocker) which extracts meme URLs and sends them through the API. HateBlocker then removes those images that are classified as hateful. Here is a short demo!
-[Video]
+
+
+[![demo](https://img.youtube.com/vi/ijJwfF7S91M/0.jpg)](https://www.youtube.com/watch?v=ijJwfF7S91M)
+
+
 ## Multistream model VisualBert features
 There have been several interesting developments in image captioning. I used a recently proposed model called VisualBert [] to extract features from image+caption and build a multi-stream classifier with the addition of features from Clarifai. This model gives AUC-ROC =0.75 of the validation data set.
 
