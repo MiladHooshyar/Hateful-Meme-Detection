@@ -1,4 +1,4 @@
-import MDVC_model_V1
+import MDVC_model
 import numpy as np
 import torch
 import torch.nn as nn
@@ -6,15 +6,15 @@ import torch.optim as optim
 import torch.utils.data as data_utils
 from collections import defaultdict
 from torch.utils.tensorboard import SummaryWriter
+import os
+dirname = os.path.dirname(__file__)
 
-train = np.load('D:/meme_data/features/train.npz')
-dev = np.load('D:/meme_data/features/dev.npz')
+train_data = os.path.dirname(dirname) + '/data/train.pickle'
+dev_data = os.path.dirname(dirname) + '/data/dev.pickle'
+feature_list = ['txt_fea', 'img_fea']
 
-feature_list = ['txt_fea', 'txt_mod', 'img_fea',
-                'img_mod']
-
-dataset_train = MDVC_model_V1.load_data(train, feature_list)
-dataset_validation = MDVC_model_V1.load_data(dev, feature_list)
+dataset_train = MDVC_model.load_data(train_data, feature_list)
+dataset_validation = MDVC_model.load_data(dev_data, feature_list)
 
 loader_train = data_utils.DataLoader(
     dataset_train,
@@ -27,18 +27,16 @@ loader_validation = data_utils.DataLoader(
 d_encoder = 1024
 d_decoder = 768
 
-
-d_model = 100
+d_model = 50
 H = 2
 d_ff = 100
 N = 1
 dout_p = 0.0
 n_label = 2
-
 N_Epoch = 300
 
 
-model = MDVC_model_V1.Model(d_encoder=d_encoder, d_decoder=d_decoder,
+model = MDVC_model.Model(d_encoder=d_encoder, d_decoder=d_decoder,
                             d_model=d_model, dout_p=dout_p, H=H,
                             d_ff=d_ff, n_label=n_label, N=N)
 criterion = nn.BCELoss()

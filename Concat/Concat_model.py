@@ -3,13 +3,15 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model
+import pickle
 
 
 class concat_model:
-    def __init__(self, feature_len, feature_name):
+    def __init__(self, feature_len, feature_name, dout):
         self.feature_len = feature_len
         self.feature_name = feature_name
         self.model = None
+        self.dout = dout
 
     def make_model(self):
         layer_dict = defaultdict()
@@ -20,28 +22,23 @@ class concat_model:
 
         # classifier = layers.Dense(128, activation='relu', name='dense1_classifier')(concat_layer)
         # classifier = layers.BatchNormalization()(classifier)
-        # classifier = layers.Dense(128, activation='relu', name='dense2_classifier')(classifier)
-        # classifier = layers.Dense(32, activation='relu', name='dense3_classifier')(classifier)
-        # classifier = layers.Dense(32, activation='relu', name='dense4_classifier')(classifier)
-        # classifier = layers.Dense(16, activation='relu', name='dense5_classifier')(classifier)
-        # classifier = layers.Dense(16, activation='relu', name='dense6_classifier')(classifier)
         # classifier = layers.Dense(8, activation='relu', name='dense7_classifier')(classifier)
+        # classifier = layers.BatchNormalization()(classifier)
         # classifier = layers.Dense(1, activation='sigmoid', name='out_classifier')(classifier)
 
         N_feature = sum(self.feature_len)
-        classifier = layers.Dropout(0.3, input_shape=(N_feature,), name='drop1_classifier')(concat_layer)
+        classifier = layers.Dropout(self.dout, input_shape=(N_feature,), name='drop1_classifier')(concat_layer)
         classifier = layers.Dense(128, activation='sigmoid', name='dense1_classifier')(classifier)
-        classifier = layers.Dropout(0.3, name='drop2_classifier')(classifier)
+        classifier = layers.Dropout(self.dout, name='drop2_classifier')(classifier)
         classifier = layers.Dense(128, activation='tanh', name='dense2_classifier')(classifier)
-        classifier = layers.Dropout(0.3, name='drop3_classifier')(classifier)
+        classifier = layers.Dropout(self.dout, name='drop3_classifier')(classifier)
         classifier = layers.Dense(32, activation='tanh', name='dense3_classifier')(classifier)
-        classifier = layers.Dropout(0.3, name='drop4_classifier')(classifier)
+        classifier = layers.Dropout(self.dout, name='drop4_classifier')(classifier)
         classifier = layers.Dense(32, activation='tanh', name='dense4_classifier')(classifier)
-        classifier = layers.Dropout(0.2, name='drop5_classifier')(classifier)
+        classifier = layers.Dropout(self.dout, name='drop5_classifier')(classifier)
         classifier = layers.Dense(16, activation='tanh', name='dense5_classifier')(classifier)
-        classifier = layers.Dropout(0.2, name='drop6_classifier')(classifier)
+        classifier = layers.Dropout(self.dout, name='drop6_classifier')(classifier)
         classifier = layers.Dense(16, activation='tanh', name='dense6_classifier')(classifier)
-        classifier = layers.Dropout(0.1, name='drop7_classifier')(classifier)
         classifier = layers.Dense(8, activation='tanh', name='dense7_classifier')(classifier)
         classifier = layers.Dense(1, activation='sigmoid', name='out_classifier')(classifier)
 
