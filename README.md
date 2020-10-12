@@ -1,7 +1,7 @@
+<p align="left"> <img src="/img/logo.png"  width="10"> </p>
 # HateBlocker
 HateBlocker is an API that utilizes deep learning to detect hateful memes from visual and textual information.
 
-![logo](https://github.com/MiladHooshyar/Hateful-Meme-Detection/blob/master/img/logo.png)
 
 # Problem description
 The effect of hateful content on social media can be devastating. A result of a [recent poll](https://www.huffpost.com/entry/social-media-harassment-fake-news-poll-alex-jones_n_5b7b1c53e4b0a5b1febdf30a) has shown that the majority of US adults consider hateful content a serious problem for which social media companies bear the responsibility of detecting and removing. In this project, I used AI to build a hateful meme detector (HateBlocker) and deployed the model as a stand-alone API and a Chrome extension.
@@ -18,20 +18,19 @@ The baseline model is a simple logistic regression that is trained on top of the
 ## Feature fusion and dense classifier [Concat model](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/Concat)
 This classifier is trained on top of several feature sets including image, text, image moderation, text moderation features. The fifth stream of information is supplied by concatenating the top-five concepts of the image to the image caption and then feeding that to the text feature extraction network.
 
-![model](https://github.com/MiladHooshyar/Hateful-Meme-Detection/blob/master/img/model.png)
+<p align="center"> <img src="/img/model.png"  width="500"> </p>
 
 
 The best performance of this model (after a lot of fine-tuning) is AUC-ROC = 0.71. Here is also an example that shows how the meaning of a meme changes with modifying either the textual and visual content which highlights the nonlinear interaction of information from image and text.
 
 
-![example](https://github.com/MiladHooshyar/Hateful-Meme-Detection/blob/master/img/example1.png)
+<p align="center"> <img src="/img/example1.png"  width="500"> </p>
 
 
 For deployment, this model is coupled with a google vision OCR (for caption extraction) and is implemented as a Flask API. The API inputs a meme URL and outputs the class probabilities. The end-product of this project is a Chrome extension (HateBlocker) which extracts meme URLs and sends them through the API. HateBlocker then removes those images that are classified as hateful. 
 
 
-![example](https://github.com/MiladHooshyar/Hateful-Meme-Detection/blob/master/img/pipeline.png)
-
+<p align="center"> <img src="/img/pipeline.png"  width="500"> </p>
 
 
 Here is also a short demo of the HB Chrome extention in a two cases with hateful and non-hateful memes. As you can see, the majority of hateful memes are filter out after the activation of the HB extention. 
