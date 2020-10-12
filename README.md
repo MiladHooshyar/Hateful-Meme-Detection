@@ -1,16 +1,19 @@
 # HateBlocker
+HateBlocker is an API that utilizes deep learning to detect hateful memes from visual and textual information.
 
 ![example](https://github.com/MiladHooshyar/Hateful-Meme-Detection/blob/master/img/logo.png)
 
-HateBlocker is an API that utilizes deep learning to detect hateful memes from visual and textual information.
 # Problem description
 The effect of hateful content on social media can be devastating. A result of a recent poll has shown that the majority of US adults consider hateful content a serious problem for which social media companies bear the responsibility of detecting and removing. In this project, I used AI to build a hateful meme detector (HateBlocker) and deployed the model as a stand-alone API and a Chrome extension.
+
 # Data
 I used data from Facebook research […] which consists of 8.5K training and 0.5 validation examples. For more information refer to […]. This data set consists of image and caption which I run through a couple of pre-trained features extraction models (see below for details). The features are available at []. For training, these features should be copied in the /data folder.
 # Models
 This project has been carried out in collaboration with the research team as Clarifai, thus the focus was to use the pre-trained models of the Clarifai platform to extract the image and text features. I also performed experiments inspired by new developments in image and video captioning []
+
 ## Baseline
 The baseline model is a simple logistic regression that is trained on top of the image and caption features from the Clarifai platform. This simple approach gives AUC-ROC=0.63.
+
 ## feature fusion and dense classifier
 This classifier is trained on top of several feature sets including image, text, image moderation, text moderation features. The fifth stream of information is supplied by concatenating the top-five concepts of the image to the image caption and then feeding that to the text feature extraction network.
 [Image]
