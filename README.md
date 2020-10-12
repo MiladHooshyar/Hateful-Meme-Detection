@@ -1,4 +1,7 @@
 # HateBlocker
+
+![example](https://github.com/MiladHooshyar/Hateful-Meme-Detection/blob/master/img/logo.png)
+
 HateBlocker is an API that utilizes deep learning to detect hateful memes from visual and textual information.
 # Problem description
 The effect of hateful content on social media can be devastating. A result of a recent poll has shown that the majority of US adults consider hateful content a serious problem for which social media companies bear the responsibility of detecting and removing. In this project, I used AI to build a hateful meme detector (HateBlocker) and deployed the model as a stand-alone API and a Chrome extension.
@@ -13,8 +16,19 @@ This classifier is trained on top of several feature sets including image, text,
 [Image]
 The best performance of this model (after a lot of fine-tuning) is AUC-ROC = 0.71.
 Here is also an example that shows how the meaning of a meme changes with modifying either the textual and visual content which highlights the nonlinear interaction of information from image and text.
-[]
-For deployment, this model is coupled with a google vision OCR (for caption extraction) and is implemented as a Flask API. The API inputs a meme URL and outputs the class probabilities. The end-product of this project is a Chrome extension (HateBlocker) which extracts meme URLs and sends them through the API. HateBlocker then removes those images that are classified as hateful. Here is a short demo!
+
+
+![example](https://github.com/MiladHooshyar/Hateful-Meme-Detection/blob/master/img/example1.png)
+
+
+For deployment, this model is coupled with a google vision OCR (for caption extraction) and is implemented as a Flask API. The API inputs a meme URL and outputs the class probabilities. The end-product of this project is a Chrome extension (HateBlocker) which extracts meme URLs and sends them through the API. HateBlocker then removes those images that are classified as hateful. 
+
+
+![example](https://github.com/MiladHooshyar/Hateful-Meme-Detection/blob/master/img/pipeline.png)
+
+
+
+Here is a short demo!
 
 
 [![demo](https://img.youtube.com/vi/ijJwfF7S91M/0.jpg)](https://www.youtube.com/watch?v=ijJwfF7S91M)
