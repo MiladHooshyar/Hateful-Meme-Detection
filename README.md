@@ -1,11 +1,20 @@
 
 # HateBlocker
 
-<p align="center"> <img src="/img/logo.png"  width="100"> </p>
+<p align="left"> <img src="/img/logo.png"  width="70"> </p>
 
 
 HateBlocker is an API that utilizes deep learning to detect hateful memes from visual and textual information.
 
+
+## Table of Contents
+  * [Problem description](#problem-description)
+  * [Data](#data)
+  * [Models](#models)
+    + [Baseline](#baseline)
+    + [Feature fusion and dense classifier: Concat model](#feature-fusion-and-dense-classifier:-concat-model)
+    + [Multistream model with VisualBert features](#multistream-model-with-visualbert-features)
+    + [Some ideas from MDVC](#some-ideas-from-mdvc)
 
 # Problem description
 The effect of hateful content on social media can be devastating. A result of a [recent poll](https://www.huffpost.com/entry/social-media-harassment-fake-news-poll-alex-jones_n_5b7b1c53e4b0a5b1febdf30a) has shown that the majority of US adults consider hateful content a serious problem for which social media companies bear the responsibility of detecting and removing. In this project, I used AI to build a hateful meme detector (HateBlocker) and deployed the model as a stand-alone API and a Chrome extension.
@@ -19,7 +28,7 @@ This project has been carried out in collaboration with the research team as [Cl
 ## [Baseline](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/BaseLine)
 The baseline model is a simple logistic regression that is trained on top of the image and caption features from the Clarifai platform. This simple approach gives AUC-ROC=0.63.
 
-## Feature fusion and dense classifier [Concat model](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/Concat)
+## Feature fusion and dense classifier: [Concat model](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/Concat)
 This classifier is trained on top of several feature sets including image, text, image moderation, text moderation features. The fifth stream of information is supplied by concatenating the top-five concepts of the image to the image caption and then feeding that to the text feature extraction network.
 
 <p align="center"> <img src="/img/model.png"  width="500"> </p>
