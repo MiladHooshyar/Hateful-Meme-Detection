@@ -40,7 +40,7 @@ Here is also a short demo of the HB Chrome extention in a two cases with hateful
 [![demo](https://img.youtube.com/vi/ijJwfF7S91M/0.jpg)](https://www.youtube.com/watch?v=ijJwfF7S91M)
 
 
-## [Multistream](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/MultiStream) model  [VisualBert](https://arxiv.org/abs/1908.03557) features
+## [Multistream](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/MultiStream) model with [VisualBert](https://arxiv.org/abs/1908.03557) features
 There have been several interesting developments in image captioning. I used a recently proposed model called [VisualBert](https://arxiv.org/abs/1908.03557) to extract features from image+caption and build a multi-stream classifier with the addition of features from Clarifai. This model gives AUC-ROC =0.75 of the validation data set.
 
 ## Some [ideas](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/MDVC) from [MDVC](https://arxiv.org/abs/2003.07758)
