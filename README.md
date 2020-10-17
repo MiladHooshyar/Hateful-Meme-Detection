@@ -1,4 +1,5 @@
 
+
 # HateBlocker
 
 <p align="left"> <img src="/img/logo.png"  width="70"> </p>
@@ -21,6 +22,13 @@ The effect of hateful content on social media can be devastating. A result of a 
 
 # Data
 I used data from [Facebook research](https://ai.facebook.com/blog/hateful-memes-challenge-and-data-set/) which consists of 8.5K training and 0.5 validation examples. This data set consists of image and caption which I run through a couple of pre-trained features extraction models (see below for details). The features are available [here](https://drive.google.com/file/d/1ikgWVV45L7rsgQ6y80721VyyzWnE3fRo/view?usp=sharing). For training, these features should be copied in the [/data](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/data) folder.
+
+
+## Setup
+Clone repository
+```
+git clone https://github.com/$username/$repo_name
+```
 
 # Models
 This project has been carried out in collaboration with the research team as [Clarifai](https://www.clarifai.com/), thus the focus was to use the pre-trained models of the Clarifai platform to extract the image and text features. I also performed experiments inspired by new developments in image and video captioning (eg. [VisualBert](https://arxiv.org/abs/1908.03557) and [MDVC](https://arxiv.org/abs/2003.07758))
