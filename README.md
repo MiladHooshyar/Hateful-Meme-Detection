@@ -27,8 +27,13 @@ I used data from [Facebook research](https://ai.facebook.com/blog/hateful-memes-
 ## Setup
 Clone repository
 ```
-git clone https://github.com/$username/$repo_name
+git clone https://github.com/MiladHooshyar/Hateful-Meme-Detection.git
 ```
+```
+cd /Concat/
+python train.py
+```
+
 
 # Models
 This project has been carried out in collaboration with the research team as [Clarifai](https://www.clarifai.com/), thus the focus was to use the pre-trained models of the Clarifai platform to extract the image and text features. I also performed experiments inspired by new developments in image and video captioning (eg. [VisualBert](https://arxiv.org/abs/1908.03557) and [MDVC](https://arxiv.org/abs/2003.07758))
