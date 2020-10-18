@@ -1,0 +1,8 @@
+# To install these Python dependencies, please type:
+# pip install -r requirements.txt
+numpy
+flask
+clarifai_grpc
+tensorflow
+google-cloud-vision
+

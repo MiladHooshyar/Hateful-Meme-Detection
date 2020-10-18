@@ -1,0 +1,7 @@
+# To install these Python dependencies, please type:
+# pip install -r requirements.txt
+numpy
+pickle
+scikit-learn
+tensorflow
+pythorch
