@@ -59,6 +59,15 @@ The best performance of this model is AUC-ROC = 0.71. Here is also an example th
 <p align="center"> <img src="/img/example1.png"  width="500"> </p>
 
 
+## [Multistream](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/MultiStream) model with [VisualBert](https://arxiv.org/abs/1908.03557) features
+There have been several interesting developments in image captioning. I used a recently proposed model called [VisualBert](https://arxiv.org/abs/1908.03557) to extract features from image+caption and build a multi-stream classifier with the addition of features from Clarifai. This model gives AUC-ROC =0.75 of the validation data set.
+
+## Some [ideas](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/MDVC) from [MDVC](https://arxiv.org/abs/2003.07758)
+A very interesting development in video captioning is the recently published work by [Vladimir Iashin and Esa Rahtu](https://arxiv.org/abs/2003.07758). The idea of encoder-decoder architecture via a multiheaded attention connection seems very appealing to the problem of textual and visual feature fusion. I implemented a modified version of MDVC. The best performance with this model with only image and text features is AUC-ROC=0.66. Indeed, better performance can be achieved by incorporating the full set of features to form a stack of encoder-decoder networks [This is still in progress].
+
+
+## Deplyment
+
 For deployment, this model is coupled with a google vision OCR (for caption extraction) and is implemented as a Flask API. The API inputs a meme URL and outputs the class probabilities. The end-product of this project is a Chrome extension (HateBlocker), which extracts meme URLs and sends them through the API. HateBlocker then removes those images that are classified as hateful. 
 
 
@@ -70,13 +79,4 @@ Here is also a short demo of the HB Chrome extension in two cases with hateful a
 
 [![demo](https://img.youtube.com/vi/ijJwfF7S91M/0.jpg)](https://www.youtube.com/watch?v=ijJwfF7S91M)
 
-
-## [Multistream](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/MultiStream) model with [VisualBert](https://arxiv.org/abs/1908.03557) features
-There have been several interesting developments in image captioning. I used a recently proposed model called [VisualBert](https://arxiv.org/abs/1908.03557) to extract features from image+caption and build a multi-stream classifier with the addition of features from Clarifai. This model gives AUC-ROC =0.75 of the validation data set.
-
-## Some [ideas](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/MDVC) from [MDVC](https://arxiv.org/abs/2003.07758)
-A very interesting development in video captioning is the recently published work by [Vladimir Iashin and Esa Rahtu](https://arxiv.org/abs/2003.07758). The idea of encoder-decoder architecture via a multiheaded attention connection seems very appealing to the problem of textual and visual feature fusion. I implemented a modified version of MDVC. The best performance with this model with only image and text features is AUC-ROC=0.66. Indeed, better performance can be achieved by incorporating the full set of features to form a stack of encoder-decoder networks [This is still in progress].
-
-
-## Deplyment
 
