@@ -15,7 +15,8 @@ HateBlocker is an API that utilizes deep learning to detect hateful memes from v
     + [Baseline](#baseline)
     + [Feature fusion and dense classifier: Concat model](#[feature-fusion-and-dense-classifier-concat-model)
     + [Multistream model with VisualBert features](#multistream-model-with-visualbert-features)
-    + [Some ideas from MDVC](#some-ideas-from-mdvc)
+    + [Ideas from MDVC](#ideas-from-mdvc)
+   * [Deployment](#deployment)
 
 # Problem description
 The effect of hateful content on social media can be devastating. Results of a [recent poll](https://www.huffpost.com/entry/social-media-harassment-fake-news-poll-alex-jones_n_5b7b1c53e4b0a5b1febdf30a) have shown that the majority of US adults consider hateful content a serious problem for which social media companies bear the responsibility of detecting and removing. In this project, I built a hateful meme detector (HateBlocker) and deployed the model as a stand-alone API and a Chrome extension.
