@@ -13,7 +13,7 @@ HateBlocker is an API that utilizes deep learning to detect hateful memes from v
   * [Data](#data)
   * [Models](#models)
     + [Baseline](#baseline)
-    + [Feature fusion and dense classifier: Concat model](#feature-fusion-and-dense-classifier:-concat-model)
+    + [Feature fusion and dense classifier: Concat model](#[feature-fusion-and-dense-classifier-concat-model)
     + [Multistream model with VisualBert features](#multistream-model-with-visualbert-features)
     + [Some ideas from MDVC](#some-ideas-from-mdvc)
 
