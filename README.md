@@ -29,25 +29,31 @@ Clone repository
 ```
 git clone https://github.com/MiladHooshyar/Hateful-Meme-Detection.git
 ```
-```
-cd /Concat/
-python train.py
-```
+
 
 
 # Models
 This project has been carried out in collaboration with the research team as [Clarifai](https://www.clarifai.com/), thus the focus was to use the pre-trained models of the Clarifai platform to extract the image and text features. I also performed experiments inspired by new developments in image and video captioning (eg. [VisualBert](https://arxiv.org/abs/1908.03557) and [MDVC](https://arxiv.org/abs/2003.07758))
 
 ## [Baseline](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/BaseLine)
-The baseline model is a simple logistic regression that is trained on top of the image and caption features from the Clarifai platform. This simple approach gives AUC-ROC=0.63.
+The baseline model is a simple logistic regression that is trained on top of the image and caption features from the Clarifai platform. To run the baseline model, try
 
-## Feature fusion and dense classifier: [Concat model](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/Concat)
+```
+python /Baseline/LR_train.py
+```
+This approach gives AUC-ROC=0.63.
+
+## [Feature fusion and dense classifier: Concat model](https://github.com/MiladHooshyar/Hateful-Meme-Detection/tree/master/Concat)
 This classifier is trained on top of several feature sets including image, text, image moderation, text moderation features. The fifth stream of information is supplied by concatenating the top-five concepts of the image to the image caption and then feeding that to the text feature extraction network.
 
 <p align="center"> <img src="/img/model.png"  width="500"> </p>
 
+To run the Concat model, try
 
-The best performance of this model (after a lot of fine-tuning) is AUC-ROC = 0.71. Here is also an example that shows how the meaning of a meme changes with modifying either the textual and visual content which highlights the nonlinear interaction of information from image and text.
+```
+python /Concat/Concat_train.py
+```
+The best performance of this model is AUC-ROC = 0.71. Here is also an example that shows how the meaning of a meme changes with modifying either the textual and visual content which highlights the nonlinear interaction of information from image and text.
 
 
 <p align="center"> <img src="/img/example1.png"  width="500"> </p>
