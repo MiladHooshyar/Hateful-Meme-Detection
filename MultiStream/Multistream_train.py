@@ -1,5 +1,5 @@
 import os
-import MultiStream_model as model
+import Multistream_model as model
 import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data as data_utils
