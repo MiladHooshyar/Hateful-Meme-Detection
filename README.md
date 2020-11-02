@@ -43,7 +43,7 @@ This project has been carried out in collaboration with the research team at [Cl
 The baseline model is a simple logistic regression that is trained on top of the image and caption features from the Clarifai platform. To run the baseline model, try
 
 ```
-python /Baseline/LR_train.py
+python Baseline/LR_train.py
 ```
 This model yeilds AUC-ROC=0.63 on validation set.
 
@@ -55,7 +55,7 @@ This classifier is trained on top of several feature sets, including image, text
 To run the Concat model, try
 
 ```
-python /Concat/Concat_train.py
+python Concat/Concat_train.py
 ```
 The best performance of this model is AUC-ROC = 0.71 on validation set. Here is an example that shows how the intension of a meme changes with modifying either the textual and visual content, which highlights the nonlinear interaction of information from image and text. The probibility of hatefulness from Concat model is denoted by $P-H$. 
 
@@ -69,7 +69,7 @@ There have been several interesting developments in image captioning recently. I
 To run this model, try
 
 ```
-python /Multistream/Multistream_train.py
+python Multistream/Multistream_train.py
 ```
 
 This model gives AUC-ROC =0.75 of the validation data set.
@@ -78,7 +78,7 @@ This model gives AUC-ROC =0.75 of the validation data set.
 A very interesting development in video captioning is the recently published work by [Vladimir Iashin and Esa Rahtu](https://arxiv.org/abs/2003.07758). The idea of encoder-decoder architecture via a multiheaded attention connection seems very appealing to the problem of textual and visual feature fusion. I implemented a modified version of MDVC. To run this model, try
 
 ```
-python /MDVC/MDVC_train.py
+python MDVC/MDVC_train.py
 ```
 
 The best performance with this model with only image and text features is AUC-ROC=0.66 on the validation data. Indeed, better performance can be achieved by incorporating the full set of features to form a stack of encoder-decoder networks [This is still in progress].
