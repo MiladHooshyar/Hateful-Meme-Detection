@@ -131,7 +131,6 @@ def load_data(data_file, feature_list):
 
     data_tensor['ID'] = torch.tensor(data['id']).int()
 
-    print(temp.shape)
 
     return data_utils.TensorDataset(data_tensor['img_fea'],
                                     data_tensor['txt_fea'],

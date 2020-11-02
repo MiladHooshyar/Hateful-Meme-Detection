@@ -2,7 +2,8 @@ import LogisticRegression_model as LR
 import numpy as np
 import os
 import pickle
-dirname = os.path.dirname(__file__)
+import sys
+dirname = sys.path[0]
 
 
 checkpoint_filepath = dirname + '/model/'

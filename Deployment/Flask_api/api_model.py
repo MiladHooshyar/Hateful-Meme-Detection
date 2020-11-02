@@ -5,9 +5,6 @@ from google.cloud import vision
 import os
 import tensorflow as tf
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'theta-totem-242819-bb71dfad2b1d.json'
-
-
 class clarifai:
 
     def __init__(self, app_id):

@@ -4,8 +4,8 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data as data_utils
 from torch.utils.tensorboard import SummaryWriter
-
-dirname = os.path.dirname(__file__)
+import sys
+dirname = sys.path[0]
 
 train_data = os.path.dirname(dirname) + '/data/train.pickle'
 dev_data = os.path.dirname(dirname) + '/data/dev.pickle'
